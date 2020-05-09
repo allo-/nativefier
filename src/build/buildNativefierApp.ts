@@ -103,19 +103,12 @@ export async function buildNativefierApp(rawOptions: any): Promise<string> {
   const options = await getOptions(rawOptions);
 
   log.info('\nPreparing Electron app...');
-  const tmpPath = getTempDir('app', 0o755);
+  const tmpPath = options.name
   await prepareElectronApp(options.packager.dir, tmpPath, options);
 
   log.info('\nConverting icons...');
   options.packager.dir = tmpPath; // const optionsWithTmpPath = { ...options, dir: tmpPath };
   await convertIconIfNecessary(options);
-
-  log.info(
-    "\nPackaging... This will take a few seconds, maybe minutes if the requested Electron isn't cached yet...",
-  );
-  trimUnprocessableOptions(options);
-  electronGet.initializeProxy(); // https://github.com/electron/get#proxies
-  const appPathArray = await electronPackager(options.packager);
 
   log.info('\nFinalizing build...');
   const appPath = getAppPath(appPathArray);
