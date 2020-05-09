@@ -118,7 +118,7 @@ function changeAppPackageJsonName(
   packageJson.name = normalizedAppName;
   log.debug(`Updating ${packageJsonPath} 'name' field to ${normalizedAppName}`);
 
-  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson));
+  fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 4));
 }
 
 /**
@@ -141,7 +141,7 @@ export async function prepareElectronApp(
   log.debug(`Writing app config to ${appJsonPath}`);
   await writeFileAsync(
     appJsonPath,
-    JSON.stringify(pickElectronAppArgs(options)),
+    JSON.stringify(pickElectronAppArgs(options, null, 4)),
   );
 
   try {
